@@ -70,6 +70,7 @@ class Mnmbb:
         print "OTHER BIDS", sorted_bids
         #t_j =  # jth highest bid of other bids
         
+        print "UTILITIES",utilities 
         return utilities
 
     def target_slot(self, t, history, reserve):
@@ -100,16 +101,20 @@ class Mnmbb:
 
         # TODO: Fill this in.
         # Meena: 
+        clicks = prev_round.clicks
+        print "CLICKS in bid", clicks 
         if self.value < min_bid: # case where you're not expecting to win and v_i < t_j  
             bid = self.value  
+            print "case 1"
         else:  
             if slot == 0:
                 bid = self.value 
+                print "case 2"
             else:
-                # p_j / p_{j-1} = 0.75, so solving eq we get 
-                # that bid = (t_j - v_i) / 0.75 + v_i 
-                bid = (min_bid - self.value) / 0.75 + self.value 
+                bid = float(clicks[slot]) / float(clicks[slot-1]) * (min_bid - self.value) + self.value
+                print "case 3"
 
+        print "bid", bid
         return bid
 
     def __repr__(self):
